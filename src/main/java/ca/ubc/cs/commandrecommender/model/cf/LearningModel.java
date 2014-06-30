@@ -6,10 +6,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by KeEr on 2014-06-23.
+ * The DataModel ({@link org.apache.mahout.cf.taste.model.DataModel}) for Learning (discovery) related
+ * CF algorithms.
  */
-//TODO: check over
+//TODO: maybe make the typing more strict to avoid later casting
 public class LearningModel extends GenericUsageModel<ToolUsePreference, ItemFactory, UserFactory> {
+
+    private LearningRulePreferenceMaker pm = new LearningRulePreferenceMaker();
 
     public LearningModel() {
         super(new ProgrammerFactory(), new LearningRuleFactory());
@@ -17,17 +20,19 @@ public class LearningModel extends GenericUsageModel<ToolUsePreference, ItemFact
 
     public LearningRuleFactory getLearningRuleFactory() {
         return (LearningRuleFactory) itemFactory;
-
     }
 
     protected void recomputePreference(){
         new MatejkaPreferenceAdjustment(this).recomputePreferences();
     }
 
-    private LearningRulePreferenceMaker pm = new LearningRulePreferenceMaker();
-
+    /**
+     * Put the information of the learning sequence (p) and the userid into the model
+     * @param userid
+     * @param p
+     */
     public void makeUseOf(int userid, Pair p){
-
+        //TODO: the casting here is rather ugly
         Long itemid = ((LearningRuleFactory)itemFactory).getOrCreateToolForName(p);
         ((ProgrammerFactory)userFactory).getOrCreateProgrammerForName((long) userid);
 
@@ -38,13 +43,12 @@ public class LearningModel extends GenericUsageModel<ToolUsePreference, ItemFact
         }
         users.add((long) userid);
 
-        if(! pm.incrementUserPrefence((long) userid, itemid)) {
-            ToolUsePreference use = new ToolUsePreference((long)userid, itemid, 1);
-            pm.insert(use);
-        }
-
+        pm.updatePrefs(userid, itemid);
     }
 
+    /**
+     * finalize the model
+     */
     public void done(){
         this.toolsToPrefs = pm.toolsToPrefs();
         this.usersToPrefs = pm.usersToPrefs();

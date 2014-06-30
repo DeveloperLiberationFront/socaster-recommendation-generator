@@ -1,57 +1,55 @@
 package ca.ubc.cs.commandrecommender.model.cf;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by KeEr on 2014-06-23.
+ * Implementation of {@link ca.ubc.cs.commandrecommender.model.cf.ItemFactory}
+ * for Learning-related CF algorithms.
+ * This is basically a bimap between pair and a unique index representing the pair
  */
-//TODO: check over
 public class LearningRuleFactory implements ItemFactory {
 
-
-    private Map<Pair, Long> ruleMap = new HashMap<Pair, Long>();
+    private BiMap<Pair, Long> ruleMap = HashBiMap.create();
 
     private long count = 0;
 
     public long getOrCreateToolForName(Pair pair){
-        if( !ruleMap.containsKey(pair)) {
+        Long itemIndex = ruleMap.get(pair);
+        if(itemIndex == null) {
             ruleMap.put(pair, count);
+            itemIndex = count;
             count++;
         }
-        return count;
+        return itemIndex;
     }
 
     @Override
     public Long toolForToolID(Long itemID) {
-        if( ruleMap.containsValue(itemID)) {
+        if(ruleMap.containsValue(itemID)) {
             return itemID;
         }
-        return (long)-1;
+        return (long) -1;
     }
 
     public Pair pairForToolID(Long itemID) {
-        Set<Pair> keySet = ruleMap.keySet();
-        for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
-            Pair pair = (Pair) iterator.next();
-            if(ruleMap.get(pair).equals(itemID))
-                return pair;
-        }
-        return null;
+        return ruleMap.inverse().get(itemID);
     }
 
     @Override
     public long[] tools() {
         Object[] a = ruleMap.values().toArray();
-
-        //TODO: better way?
+        //TODO: (Minor) better way?
         long[] tools= new long[a.length];
         for (int i = 0; i < a.length; i++) {
             tools[i]= (Long) a[i];
         }
-
         return tools;
     }
+
 }

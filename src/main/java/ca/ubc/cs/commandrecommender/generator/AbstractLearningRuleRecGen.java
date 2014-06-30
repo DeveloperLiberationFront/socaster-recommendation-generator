@@ -57,7 +57,7 @@ public abstract class AbstractLearningRuleRecGen extends AbstractFilteredLearnin
             tempRecs.remove(tool);
         }
 
-        SortedBag<Integer> recs = SortingUtils.sort(tempRecs);
+        SortedBag<Integer> recs = SortingUtils.sortBagByCount(tempRecs);
 
         for(Integer i : recs.uniqueSet()){
             rc.add(i, (double)recs.getCount(i));

@@ -12,7 +12,6 @@ import java.util.Set;
  * See examples in /test/ directory for the format of input files.
  * @author Philippe Fournier-Viger 
  **/
-//TODO: check over
 public class SequenceDatabase implements Serializable{
 
 	// List of sequences

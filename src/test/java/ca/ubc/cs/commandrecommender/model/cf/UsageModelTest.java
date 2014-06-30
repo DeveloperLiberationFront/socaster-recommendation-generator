@@ -30,7 +30,6 @@ public class UsageModelTest extends TestCase{
 		
 		model.makeUseOf(15, B, T1);
 		model.makeUseOf(25, B, T2);
-		
 
 		model.makeUseOf(13, C, T3);
 		model.makeUseOf( 3, C, T2);		

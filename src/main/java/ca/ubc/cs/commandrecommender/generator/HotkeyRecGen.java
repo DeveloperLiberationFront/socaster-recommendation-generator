@@ -57,7 +57,9 @@ public class HotkeyRecGen extends AbstractRecGen {
     @Override
     public void fillRecommendations(RecommendationCollector rc) {
         Bag<Integer> neverHotkey = userNeverHotkeyCmdMap.get(rc.userId);
-        SortedBag<Integer> neverHotkeyCmdsByFrequency = SortingUtils.sort(neverHotkey);
+        if (neverHotkey == null)
+            return;
+        SortedBag<Integer> neverHotkeyCmdsByFrequency = SortingUtils.sortBagByCount(neverHotkey);
         for (Integer tool : neverHotkeyCmdsByFrequency) {
             if (cmdsWithShortcuts.contains(tool)) {
                 rc.add(tool, (double) neverHotkeyCmdsByFrequency.getCount(tool));

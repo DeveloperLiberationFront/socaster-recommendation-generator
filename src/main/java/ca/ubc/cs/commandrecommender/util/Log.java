@@ -4,7 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-//TODO: renew
+//TODO: Doesn't look like this is useful. We can delete this code if the new logging system
+//      does not use this
 public class Log {
 
 	private static BufferedWriter log;

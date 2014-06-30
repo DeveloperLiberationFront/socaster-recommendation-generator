@@ -3,29 +3,31 @@ package ca.ubc.cs.commandrecommender.model.cf;
 import org.apache.mahout.cf.taste.model.Preference;
 
 /**
+ * Encapsulates a command (or tool) and a preference value, which indicates the
+ * strength of the preference for the command. the values are associated to users.
+ *
  * Created by KeEr on 2014-06-23.
  */
-//TODO: check over
 public class ToolUsePreference implements Preference {
 
-    private final long toolid;
-    private final long userid;
+    private final long toolId;
+    private final long userId;
     private float value;
 
-    public ToolUsePreference(long toolid, long userid, int value) {
-        this.toolid = toolid;
-        this.userid = userid;
+    public ToolUsePreference(long toolId, long userId, int value) {
+        this.toolId = toolId;
+        this.userId = userId;
         this.value = value;
     }
 
     @Override
     public long getItemID() {
-        return toolid;
+        return toolId;
     }
 
     @Override
     public long getUserID() {
-        return userid;
+        return userId;
     }
 
     @Override
@@ -38,8 +40,9 @@ public class ToolUsePreference implements Preference {
         this.value = value;
     }
 
+    @Override
     public String toString(){
-        return userid+"@"+toolid + "="+value;
+        return userId +"@"+ toolId + "="+value;
     }
 
 }
