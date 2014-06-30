@@ -13,7 +13,6 @@ public class UDCUsageModel extends UsageModel {
     }
 
     public void finish(){
-
         usersToPrefs = converter.usersToPrefs();
         toolsToPrefs = converter.toolsToPrefs();
 

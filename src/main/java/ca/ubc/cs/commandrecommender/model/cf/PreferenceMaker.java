@@ -1,8 +1,13 @@
 package ca.ubc.cs.commandrecommender.model.cf;
 
+/**
+ *
+ *
+ */
 //TODO: check over
 public class PreferenceMaker extends GenericPreferenceMaker<ToolUsePreference>{
-	
+
+    @Override
 	protected ToolUsePreference[] makeArray(int size) {
 		return new ToolUsePreference[size];
 	}

@@ -31,7 +31,9 @@ public class MatejkaSimilarity implements UserSimilarity, ItemSimilarity{
 		if (userID1 < 0 || userID2 <0) {
 			throw new IllegalArgumentException("user1 or user2 is negative");
 		}
-		double a = similarity(	dataModel.getPreferencesFromUser(userID1), dataModel.getPreferencesFromUser(userID2),	true);
+		double a = similarity(dataModel.getPreferencesFromUser(userID1),
+                              dataModel.getPreferencesFromUser(userID2),
+                              true);
 		return a;
 	}
 	

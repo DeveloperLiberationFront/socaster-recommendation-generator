@@ -2,8 +2,6 @@ package ca.pfv.spmf;
 
 import java.io.Serializable;
 
-
-//TODO: check over
 public class Item implements Serializable{
 	
 	private final int id;

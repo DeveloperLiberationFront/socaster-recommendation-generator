@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Implementation of {@link ca.ubc.cs.commandrecommender.model.cf.ItemFactory}
+ * for Learning-related CF algorithms
+ *
  * Created by KeEr on 2014-06-23.
  */
 //TODO: check over

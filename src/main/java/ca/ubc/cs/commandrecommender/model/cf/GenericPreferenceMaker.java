@@ -15,7 +15,6 @@ public abstract class GenericPreferenceMaker<P extends Preference>{
 		genericCopy(usersToPrefs,prefs);
 		return prefs;
 	}
-	
 
 	
 	public Map<Long, P[]> toolsToPrefs() {
@@ -69,4 +68,5 @@ public abstract class GenericPreferenceMaker<P extends Preference>{
 	protected abstract P[] makeArray(int size);
 	
 	public abstract void insert(P use);
+
 }

@@ -25,7 +25,7 @@ public abstract class UsageModel extends GenericUsageModel<ToolUsePreference, It
 	}
 	
 	protected ToolUsePreference makeUseOf(int useCount, long userid, long originid){
-		//originid=toolid
+		//originid represents toolid
 		((ToolFactory)itemFactory).getOrCreateToolForName(originid);
 		((ProgrammerFactory)userFactory).getOrCreateProgrammerForName(userid); 
 		ToolUsePreference use = new ToolUsePreference(originid,userid,useCount);

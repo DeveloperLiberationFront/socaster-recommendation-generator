@@ -69,6 +69,7 @@ public class MongoCommandDBTest {
                     .append(EclipseCommandToolConverter.DESCRIPTION, description)
                     .append(EclipseCommandToolConverter.TIME, time)
                     .append(EclipseCommandToolConverter.BINDING_USED, true)
+                    .append(MongoCommandDB.KIND, MongoCommandDB.COMMAND)
                     .append(EclipseCommandToolConverter.USER_ID, userId);
             Integer toolIndex = toolIndexMap.addItem(description);
 

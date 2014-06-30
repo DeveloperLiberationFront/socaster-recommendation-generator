@@ -2,9 +2,6 @@ package ca.pfv.spmf;
 
 import java.util.*;
 
-//TODO: we should consider either renewing these classes to fit our use
-//TODO: add in the license readme files for this package
-//      or import the whole package from the old code base as a library
 public class Cluster {
 	private List<ItemValued> items;
 	private double median;

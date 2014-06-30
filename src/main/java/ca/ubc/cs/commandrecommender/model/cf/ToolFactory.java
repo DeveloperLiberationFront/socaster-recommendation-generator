@@ -8,6 +8,12 @@ class ToolFactory implements ItemFactory {
 
 	private Set<Long> toolset = new HashSet<Long>();
 
+    /**
+     * add {@code id} to {@code toolset} if {@code id} is not in the
+     * {@code toolset}. Returns {@code id} for convenience
+     * @param id
+     * @return
+     */
 	public long getOrCreateToolForName(long id) {
 		if (!toolset.contains(id)) {
 			toolset.add(id);
@@ -15,6 +21,7 @@ class ToolFactory implements ItemFactory {
 		return id;
 	}
 
+    @Override
 	public Long toolForToolID(Long itemID) {
 		if (toolset.contains(itemID)) {
 			return itemID;
@@ -22,16 +29,15 @@ class ToolFactory implements ItemFactory {
 		return (long) -1;
 	}
 
+    @Override
 	public long[] tools() {
-		
 		Object[] a = toolset.toArray();
-		
-		//TODO: better way?
 		long[] tools= new long[a.length];
 		for (int i = 0; i < a.length; i++) {
 			tools[i]= (Long) a[i];
-		} 
-		
+		}
+
 		return tools;
 	}
+
 }
