@@ -27,7 +27,7 @@ public class LearningModel extends GenericUsageModel<ToolUsePreference, ItemFact
     private LearningRulePreferenceMaker pm = new LearningRulePreferenceMaker();
 
     public void makeUseOf(int userid, Pair p){
-
+        //TODO: the casting here is rather ugly
         Long itemid = ((LearningRuleFactory)itemFactory).getOrCreateToolForName(p);
         ((ProgrammerFactory)userFactory).getOrCreateProgrammerForName((long) userid);
 

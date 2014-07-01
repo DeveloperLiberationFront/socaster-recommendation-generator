@@ -8,10 +8,9 @@ import java.util.Set;
 /**
  * Implementation of {@link ca.ubc.cs.commandrecommender.model.cf.ItemFactory}
  * for Learning-related CF algorithms
- *
- * Created by KeEr on 2014-06-23.
  */
 //TODO: check over
+//TODO: might want to use a bimap instead to improve efficiency
 public class LearningRuleFactory implements ItemFactory {
 
 
@@ -19,8 +18,9 @@ public class LearningRuleFactory implements ItemFactory {
 
     private long count = 0;
 
+    //TODO: P1 the return value of this method seems very strange
     public long getOrCreateToolForName(Pair pair){
-        if( !ruleMap.containsKey(pair)) {
+        if(!ruleMap.containsKey(pair)) {
             ruleMap.put(pair, count);
             count++;
         }
@@ -29,10 +29,10 @@ public class LearningRuleFactory implements ItemFactory {
 
     @Override
     public Long toolForToolID(Long itemID) {
-        if( ruleMap.containsValue(itemID)) {
+        if(ruleMap.containsValue(itemID)) {
             return itemID;
         }
-        return (long)-1;
+        return (long) -1;
     }
 
     public Pair pairForToolID(Long itemID) {
@@ -48,8 +48,7 @@ public class LearningRuleFactory implements ItemFactory {
     @Override
     public long[] tools() {
         Object[] a = ruleMap.values().toArray();
-
-        //TODO: better way?
+        //TODO: (Minor) better way?
         long[] tools= new long[a.length];
         for (int i = 0; i < a.length; i++) {
             tools[i]= (Long) a[i];
@@ -57,4 +56,5 @@ public class LearningRuleFactory implements ItemFactory {
 
         return tools;
     }
+
 }

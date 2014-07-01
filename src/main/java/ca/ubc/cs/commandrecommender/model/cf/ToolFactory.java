@@ -3,7 +3,10 @@ package ca.ubc.cs.commandrecommender.model.cf;
 import java.util.HashSet;
 import java.util.Set;
 
-//TODO: check over
+/**
+ * Implementation of {@link ca.ubc.cs.commandrecommender.model.cf.ItemFactory}
+ * for standard CF algorithms
+ */
 class ToolFactory implements ItemFactory {
 
 	private Set<Long> toolset = new HashSet<Long>();
@@ -32,11 +35,11 @@ class ToolFactory implements ItemFactory {
     @Override
 	public long[] tools() {
 		Object[] a = toolset.toArray();
+        //TODO: (Minor) better way?
 		long[] tools= new long[a.length];
 		for (int i = 0; i < a.length; i++) {
 			tools[i]= (Long) a[i];
 		}
-
 		return tools;
 	}
 
