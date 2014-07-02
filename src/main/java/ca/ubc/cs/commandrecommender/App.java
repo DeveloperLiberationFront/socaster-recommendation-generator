@@ -24,7 +24,7 @@ public class App {
     private static AbstractRecommendationDB recommendationDB;
     private static IndexMap userIndexMap;
     private static IndexMap toolIndexMap;
-    private static String dbName = "commands-development";
+    private static String dbName = "commands-production";
     private static String dbUrl = "localhost";
     private static int port = 27017;
     private static int amount = 10;

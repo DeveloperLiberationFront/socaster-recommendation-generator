@@ -26,6 +26,7 @@ public class MongoRecommendationDB extends AbstractRecommendationDB{
     public static final String COMMAND_DETAILS_COLLECTION = "command_details";
     public static final String COMMAND_ID_FIELD = "command_id";
     public static final String LAST_UPLOADED_DATE_FIELD = "last_upload_date";
+    public static final String CREATED_ON = "created_on";
     public static final String REASON_FIELD = "reason";
 
     private MongoClient client;
@@ -72,7 +73,8 @@ public class MongoRecommendationDB extends AbstractRecommendationDB{
         BasicDBObject recommendationToSave = new BasicDBObject(USER_ID_FIELD, userId)
                 .append(COMMAND_DETAIL_ID_FIELD, commandDetail.get(COMMAND_DETAIL_OBJECT_ID_FIELD))
                 .append(NEW_RECOMMENDATION_FIELD, true)
-                .append(REASON_FIELD, reason);
+                .append(REASON_FIELD, reason)
+                .append(CREATED_ON, new Date(System.currentTimeMillis()));
         recommendationCollection.insert(recommendationToSave);
     }
 
