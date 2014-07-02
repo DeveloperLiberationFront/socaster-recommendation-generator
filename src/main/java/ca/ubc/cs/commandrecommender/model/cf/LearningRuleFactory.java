@@ -1,5 +1,8 @@
 package ca.ubc.cs.commandrecommender.model.cf;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -9,22 +12,20 @@ import java.util.Set;
  * Implementation of {@link ca.ubc.cs.commandrecommender.model.cf.ItemFactory}
  * for Learning-related CF algorithms
  */
-//TODO: check over
-//TODO: might want to use a bimap instead to improve efficiency
 public class LearningRuleFactory implements ItemFactory {
 
-
-    private Map<Pair, Long> ruleMap = new HashMap<Pair, Long>();
+    private BiMap<Pair, Long> ruleMap = HashBiMap.create();
 
     private long count = 0;
 
-    //TODO: P1 the return value of this method seems very strange
     public long getOrCreateToolForName(Pair pair){
-        if(!ruleMap.containsKey(pair)) {
+        Long itemIndex = ruleMap.get(pair);
+        if(itemIndex == null) {
             ruleMap.put(pair, count);
+            itemIndex = count;
             count++;
         }
-        return count;
+        return itemIndex;
     }
 
     @Override
@@ -36,13 +37,7 @@ public class LearningRuleFactory implements ItemFactory {
     }
 
     public Pair pairForToolID(Long itemID) {
-        Set<Pair> keySet = ruleMap.keySet();
-        for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
-            Pair pair = (Pair) iterator.next();
-            if(ruleMap.get(pair).equals(itemID))
-                return pair;
-        }
-        return null;
+        return ruleMap.inverse().get(itemID);
     }
 
     @Override
@@ -53,7 +48,6 @@ public class LearningRuleFactory implements ItemFactory {
         for (int i = 0; i < a.length; i++) {
             tools[i]= (Long) a[i];
         }
-
         return tools;
     }
 

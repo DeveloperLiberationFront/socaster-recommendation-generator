@@ -17,7 +17,6 @@ public class LearningModel extends GenericUsageModel<ToolUsePreference, ItemFact
 
     public LearningRuleFactory getLearningRuleFactory() {
         return (LearningRuleFactory) itemFactory;
-
     }
 
     protected void recomputePreference(){
@@ -38,11 +37,7 @@ public class LearningModel extends GenericUsageModel<ToolUsePreference, ItemFact
         }
         users.add((long) userid);
 
-        if(! pm.incrementUserPrefence((long) userid, itemid)) {
-            ToolUsePreference use = new ToolUsePreference((long)userid, itemid, 1);
-            pm.insert(use);
-        }
-
+        pm.updatePrefs(userid, itemid);
     }
 
     public void done(){

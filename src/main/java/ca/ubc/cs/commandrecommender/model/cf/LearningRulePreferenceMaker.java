@@ -1,28 +1,39 @@
 package ca.ubc.cs.commandrecommender.model.cf;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by KeEr on 2014-06-23.
+ * A helper class to allow insertion and update of LearningRule related ToolUsePreference
  */
-
-//TODO: check over
 public class LearningRulePreferenceMaker extends PreferenceMaker {
 
-    public boolean incrementUserPrefence(Long userid, Long itemid) {
-        List<ToolUsePreference> list1 = usersToPrefs.get(userid);
-        for (Iterator iterator = list1.iterator(); iterator.hasNext();) {
-            ToolUsePreference toolUse = (ToolUsePreference) iterator.next();
-            if(toolUse.getItemID()==itemid){
+    public void updatePrefs(long userId, long itemId) {
+        ToolUsePreference use = new ToolUsePreference((long)userId, itemId, 1);
+        if (!incrementUsersToPrefs(userId, itemId))
+            genericInsert(usersToPrefs, use.getUserID(), use);
+        if (!incrementToolsToPrefs(userId, itemId))
+            genericInsert(toolsToPrefs, use.getItemID(), use);
+    }
+
+    private boolean incrementUsersToPrefs(long userId, long itemId) {
+        List<ToolUsePreference> list = usersToPrefs.get(userId);
+        if (list == null)
+            return false;
+        for (ToolUsePreference toolUse : list) {
+            if(toolUse.getItemID()==itemId){
                 toolUse.setValue(toolUse.getValue()+1);
                 return true;
             }
         }
-        List<ToolUsePreference> list2 = toolsToPrefs.get(itemid);
-        for (Iterator iterator = list2.iterator(); iterator.hasNext();) {
-            ToolUsePreference toolUse = (ToolUsePreference) iterator.next();
-            if(toolUse.getUserID()==userid){
+        return false;
+    }
+
+    private boolean incrementToolsToPrefs(long userId, long itemId) {
+        List<ToolUsePreference> list = toolsToPrefs.get(itemId);
+        if (list == null)
+            return false;
+        for (ToolUsePreference toolUse : list) {
+            if(toolUse.getUserID()==userId){
                 toolUse.setValue(toolUse.getValue()+1);
                 return true;
             }
