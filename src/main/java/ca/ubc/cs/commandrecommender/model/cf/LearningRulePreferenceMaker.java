@@ -8,7 +8,7 @@ import java.util.List;
 public class LearningRulePreferenceMaker extends PreferenceMaker {
 
     public void updatePrefs(long userId, long itemId) {
-        ToolUsePreference use = new ToolUsePreference((long)userId, itemId, 1);
+        ToolUsePreference use = new ToolUsePreference(itemId, userId, 1);
         if (!incrementUsersToPrefs(userId, itemId))
             genericInsert(usersToPrefs, use.getUserID(), use);
         if (!incrementToolsToPrefs(userId, itemId))
