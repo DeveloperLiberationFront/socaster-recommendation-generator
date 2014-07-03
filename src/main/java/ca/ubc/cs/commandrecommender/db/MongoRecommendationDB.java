@@ -29,22 +29,22 @@ public class MongoRecommendationDB extends AbstractRecommendationDB{
     public static final String CREATED_ON = "created_on";
     public static final String REASON_FIELD = "reason";
 
-    private MongoClient client;
+    private MongoClient recommendationClient;
     private DBCollection userCollection;
     private DBCollection recommendationCollection;
     private DBCollection commandDetailsCollection;
     private AbstractCommandToolConverter toolConverter;
 
 
-    public MongoRecommendationDB(ConnectionParameters connectionParameters,
+    public MongoRecommendationDB(ConnectionParameters recommendationConnectionParameters,
                                  AbstractCommandToolConverter toolConverter, IndexMap userIndexMap) throws DBConnectionException{
         super(userIndexMap);
         this.toolConverter = toolConverter;
         try {
-            client = new MongoClient(connectionParameters.getDbUrl(), connectionParameters.getDbPort());
-            this.userCollection = getCollection(connectionParameters, USER_COLLECTION);
-            this.recommendationCollection = getCollection(connectionParameters, USER_RECOMMENDATION_COLLECTION);
-            this.commandDetailsCollection = getCollection(connectionParameters, COMMAND_DETAILS_COLLECTION);
+            recommendationClient = new MongoClient(recommendationConnectionParameters.getDbUrl(), recommendationConnectionParameters.getDbPort());
+            this.userCollection = getCollection(recommendationConnectionParameters, USER_COLLECTION);
+            this.recommendationCollection = getCollection(recommendationConnectionParameters, USER_RECOMMENDATION_COLLECTION);
+            this.commandDetailsCollection = getCollection(recommendationConnectionParameters, COMMAND_DETAILS_COLLECTION);
             ensureIndex();
         }catch(UnknownHostException ex){
             throw new DBConnectionException(ex);
@@ -58,7 +58,7 @@ public class MongoRecommendationDB extends AbstractRecommendationDB{
     }
 
     private DBCollection getCollection(ConnectionParameters connectionParameters, String collection) {
-        return client.getDB(connectionParameters.getdBName()).getCollection(collection);
+        return recommendationClient.getDB(connectionParameters.getdBName()).getCollection(collection);
     }
 
     @Override
