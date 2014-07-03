@@ -25,7 +25,7 @@ public class SortUtilsTest extends TestCase{
 		assertAbout(bCopy);
 		assertEquals(b,bCopy);
 		
-		Bag<Integer> bSorted = SortingUtils.sort(b);
+		Bag<Integer> bSorted = SortingUtils.sortBagByCount(b);
 		
 		assertAbout(bSorted);
 		assertEquals(b,bSorted);

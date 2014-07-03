@@ -76,7 +76,7 @@ public class ToolUseCollection extends ArrayList<ToolUse>{
 
         List<Transaction> ts = new ArrayList<Transaction>();
 
-        //TODO:this is wasteful...
+        //TODO:this is wasteful for transactions that contain a lot less commands than the toolCount
         int toolCount = 10000;
 
         Transaction trans = new Transaction(toolCount);

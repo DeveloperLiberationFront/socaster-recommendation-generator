@@ -1,36 +1,38 @@
 package ca.ubc.cs.commandrecommender.model.cf;
 /**
- * Slightly modifed from SPMF
+ * Used to represent antecedent consequent pair
+ * where left is the antecedent and right is the consequent.
+ * (Note: Slightly modifed from SPMF)
  * 
  * @author emerson
  *
  */
-//TODO: check over
 public class Pair {
 
-    private final Integer _left;
-    private final Integer _right;
+    private final Integer left;
+    private final Integer right;
+
+    public Pair(final Integer left, final Integer right) {
+        this.left = left;
+        this.right = right;
+    }
 
     public Integer getRight() {
-        return _right;
+        return right;
+    }
+
+    public Integer getLeft() {
+        return left;
     }
 
     public int compareTo(Pair other) {
-		int firstC = this._left.compareTo(other._left);
+		int firstC = this.left.compareTo(other.left);
 		return firstC==0 ?
-			this._right.compareTo(other._right):
+			this.right.compareTo(other.right):
 			firstC;
 	}
 
-	public Integer getLeft() {
-        return _left;
-    }
-
-    public Pair(final Integer left, final Integer right) {
-        _left = left;
-        _right = right;
-    }
-
+    @Override
     public final boolean equals(Object o) {
         if (!(o instanceof Pair))
             return false;
@@ -39,22 +41,24 @@ public class Pair {
         return equal(getLeft(), other.getLeft()) && equal(getRight(), other.getRight());
     }
 
-    public static final boolean equal(Object o1, Object o2) {
+    private static final boolean equal(Object o1, Object o2) {
         if (o1 == null) {
             return o2 == null;
         }
         return o1.equals(o2);
     }
 
+    @Override
     public int hashCode() {
         int hLeft = getLeft() == null ? 0 : getLeft().hashCode();
         int hRight = getRight() == null ? 0 : getRight().hashCode();
 
         return hLeft + (57 * hRight);
     }
-    
+
+    @Override
     public String toString(){
-    	return "("+_left+","+_right+")";
+    	return "("+ left +","+ right +")";
     }
 }
 

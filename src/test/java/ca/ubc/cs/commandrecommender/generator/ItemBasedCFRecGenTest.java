@@ -41,7 +41,7 @@ public class ItemBasedCFRecGenTest extends AbstractCFRecGenTest {
 		assertEquals(new Integer(6),rc.iterator().next());
 		assertTrue(rc.containsRec(2));
 		assertTrue(rc.containsRec(3));
-		assertTrue(rc.containsRec(7));//TODO: why would 7 and 8 have different numbers?
+		assertTrue(rc.containsRec(7));
 		assertTrue(rc.containsRec(8));
 	}
 	

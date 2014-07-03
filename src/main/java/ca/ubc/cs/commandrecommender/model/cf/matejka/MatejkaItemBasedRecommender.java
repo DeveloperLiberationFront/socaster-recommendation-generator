@@ -39,7 +39,6 @@ public final class MatejkaItemBasedRecommender  extends AbstractRecommender impl
 		} catch (TasteException e) {
 			e.printStackTrace();
 		}
-		
 
 		this.alpha = ops.alpha;
 	}

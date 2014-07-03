@@ -1,6 +1,5 @@
 package ca.ubc.cs.commandrecommender.model.cf.matejka;
 
-//TODO: check over
 public class MatejkaOptions {
 	
 	public boolean calculateJustWithOverlap;

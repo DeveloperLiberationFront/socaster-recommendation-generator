@@ -59,13 +59,7 @@ public abstract class AbstractCFRecGen extends AbstractRecGen {
     @Override
     public  void fillRecommendations(RecommendationCollector rc) {
         try {
-
-            //TODO: investigate the following todo tag which was in the original code
-            //TODO: hopefully commenting the following does not cause trouble
-//			if(recommender.getDataModel().getUser(rc.userId)==null)
-//				return;
-
-            //TODO 1000 hack again
+            //TODO: the 1000 is artibrary... how to do this better?
             List<RecommendedItem> items = recommender.recommend(rc.userId, 1000);
             for(RecommendedItem item : items){
                 rc.add((int)item.getItemID(), (double)item.getValue());

@@ -43,8 +43,8 @@ public abstract class AbstractRecGenTest {
     }
 
 	protected ToolUseCollection addDummyPerson() {
-		ToolUseCollection p = new ToolUseCollection(-1);
-		p.add(new ToolUse(now(), -1, true));
+		ToolUseCollection p = new ToolUseCollection(10000);
+		p.add(new ToolUse(now(), 10000, true));
 		return p;
 	}
 
