@@ -5,13 +5,15 @@ import ca.ubc.cs.commandrecommender.model.cf.matejka.MatejkaPreferenceAdjustment
 import java.util.HashSet;
 import java.util.Set;
 
-/*
+/**
+ * A base DataModel for pure CF algorithms
+ *
+ * Performance Note:
  * Everything here should be linear time, with the exception of 
  * getNumUsersWithPreferenceFor, which could be precomputed, 
  * but would produce too-large data structure.  It's no worse
  * than linear. 
  */
-//TODO: check over
 public abstract class UsageModel extends GenericUsageModel<ToolUsePreference, ItemFactory, UserFactory>
 			implements IPreferenceMapper<ToolUsePreference> {
 	

@@ -1,17 +1,26 @@
 package ca.ubc.cs.commandrecommender.model.cf;
 
 /**
- * Created by KeEr on 2014-06-23.
+ * A DataModel for pure CF related algorithms.
  */
-//TODO: check over
 public class UDCUsageModel extends UsageModel {
 
     private PreferenceMaker converter = new PreferenceMaker();
 
+    /**
+     * Put the information about what user used which tool how many times into
+     * the model
+     * @param useCount
+     * @param userid
+     * @param originid
+     */
     public void insertUse(int useCount, long userid, long originid){
         converter.insert(makeUseOf(useCount, userid, originid));
     }
 
+    /**
+     * Finalize the model and recompute the preference
+     */
     public void finish(){
         usersToPrefs = converter.usersToPrefs();
         toolsToPrefs = converter.toolsToPrefs();

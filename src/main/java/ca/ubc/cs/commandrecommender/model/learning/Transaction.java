@@ -9,7 +9,9 @@ import java.util.Set;
  */
 public class Transaction{
 	
-	private final double[] toolsUsed; //TODO: this is wasting a lot of space
+	private final double[] toolsUsed; //TODO: this is wasteful for transactions that contain a lot less
+	                                  // commands than the toolCount we could consider using a map instead
+	                                  // but a map could have a lot more overhead than a plain simple array
 	
 	private int userId;
 	private Timestamp lastTimeUsed;

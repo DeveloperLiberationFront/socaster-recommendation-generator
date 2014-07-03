@@ -7,6 +7,10 @@ import java.util.List;
  */
 public class LearningRulePreferenceMaker extends PreferenceMaker {
 
+    /**
+     * update and insert the preferences related to userId and itemId
+     * to build a usable data model
+     */
     public void updatePrefs(long userId, long itemId) {
         ToolUsePreference use = new ToolUsePreference(itemId, userId, 1);
         if (!incrementUsersToPrefs(userId, itemId))
@@ -15,6 +19,7 @@ public class LearningRulePreferenceMaker extends PreferenceMaker {
             genericInsert(toolsToPrefs, use.getItemID(), use);
     }
 
+    //update usersToPrefs with the userId and the itemId if possible
     private boolean incrementUsersToPrefs(long userId, long itemId) {
         List<ToolUsePreference> list = usersToPrefs.get(userId);
         if (list == null)
@@ -28,6 +33,7 @@ public class LearningRulePreferenceMaker extends PreferenceMaker {
         return false;
     }
 
+    //update toolsToPrefs with the userId and the itemId if possible
     private boolean incrementToolsToPrefs(long userId, long itemId) {
         List<ToolUsePreference> list = toolsToPrefs.get(itemId);
         if (list == null)

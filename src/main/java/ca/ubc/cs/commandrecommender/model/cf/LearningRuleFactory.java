@@ -10,7 +10,8 @@ import java.util.Set;
 
 /**
  * Implementation of {@link ca.ubc.cs.commandrecommender.model.cf.ItemFactory}
- * for Learning-related CF algorithms
+ * for Learning-related CF algorithms.
+ * This is basically a bimap between pair and a unique index representing the pair
  */
 public class LearningRuleFactory implements ItemFactory {
 
