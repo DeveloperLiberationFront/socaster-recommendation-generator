@@ -11,8 +11,11 @@ import ca.ubc.cs.commandrecommender.model.User;
 import ca.ubc.cs.commandrecommender.model.acceptance.AbstractLearningAcceptance;
 import ca.ubc.cs.commandrecommender.model.acceptance.LearningAcceptanceType;
 import org.apache.commons.cli.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.UnknownHostException;
+import java.util.List;
 
 /**
  * Created by KeEr on 2014-06-09.
@@ -29,7 +32,7 @@ public class App {
     public static final String RECOMMENDATION_USER = "ru";
     public static final String RECOMMENDATION_PASS = "rpass";
     public static final String AMOUNT = "a";
-    public static final String ALORITHM_TYPE = "t";
+    public static final String ALGORITHM_TYPE = "t";
     public static final String ACCEPTANCE_TYPE = "c";
     private static AbstractCommandToolConverter toolConverter;
     private static ConnectionParameters commandConnectionParameters;
@@ -45,6 +48,7 @@ public class App {
     private static String algorithmName = "MOST_WIDELY_USED";
     private static AlgorithmType algorithmType;
     private static AbstractLearningAcceptance acceptance;
+    private static Logger logger = LogManager.getLogger(App.class);
 
     public static void main(String[] args) throws UnknownHostException, DBConnectionException {
         //establish connection
@@ -60,19 +64,43 @@ public class App {
         initializeDatabases();
         IRecGen recGen = algorithmType.getRecGen(acceptance);
         String reason = recGen.getAlgorithmUsed();
-        for (ToolUseCollection uses : commandDB.getAllUsageData())
+        long time = System.currentTimeMillis();
+        List<ToolUseCollection> toolUses =  commandDB.getAllUsageData();
+        logger.trace("Time to Retrieve Data From Database: {}", getAmountOfTimeTaken(time));
+        time = System.currentTimeMillis();
+        for (ToolUseCollection uses : toolUses)
             recGen.trainWith(uses);
-
+        logger.trace("Trained with {}, in {}", toolUses.size(), getAmountOfTimeTaken(time));
+        time = System.currentTimeMillis();
         recGen.runAlgorithm();
+        logger.trace("Ran Algorithm {} in {}", algorithmType.getRationale(), getAmountOfTimeTaken(time));
+        int totalUserRecommendation = 0;
+        long allUsersTime = System.currentTimeMillis();
         for (User user : recommendationDB.getAllUsers()) {
             if (user.isTimeToGenerateRecs()) {
+                logger.trace("Generating recommendation process for user: {}", user.getUserId());
                 int userId = userIndexMap.getItemByItemId(user.getUserId());
+                time = System.currentTimeMillis();
                 ToolUseCollection history = commandDB.getUsersUsageData(user.getUserId());
+                logger.trace("Retrieving Usage Data for user: {}, number of entries: {}, in {}", user.getUserId(), history.size(), getAmountOfTimeTaken(time));
                 Iterable<Integer> recommendations = recGen.getRecommendationsForUser(user, history, amount, userId);
+                time = System.currentTimeMillis();
+                logger.trace("Recommendations for user: {}, gathered in {}", user.getUserId(), getAmountOfTimeTaken(time));
                 user.saveRecommendations(recommendations, reason, toolIndexMap);
                 user.updateRecommendationStatus();
+                logger.trace("Saved and completed recommendation gathering process for user: {}", user.getUserId());
+                totalUserRecommendation++;
             }
         }
+        logger.trace("Finished generating recommendations for {} users in {}", totalUserRecommendation, getAmountOfTimeTaken(allUsersTime));
+    }
+
+    private static String getAmountOfTimeTaken(long time) {
+        long difference = System.currentTimeMillis() - time;
+        long second = (difference / 1000) % 60;
+        long minute = (difference / (1000 * 60) % 60);
+        long hour = (difference / (1000 * 60 * 60) % 60);
+        return String.format("%02d:%02d:%02d:%d", hour, minute, second, (difference%1000));
     }
 
     private static Options createCommandLineOptions() {
@@ -88,7 +116,7 @@ public class App {
         options.addOption(RECOMMENDATION_USER, true, "User for your recommendation data store. Default: none");
         options.addOption(RECOMMENDATION_PASS, true, "Password for the user for the recommendation data store. Default: none");
         options.addOption(AMOUNT, true, "Number of recommendations to generate for each user. Default: " + amount);
-        options.addOption(ALORITHM_TYPE, true, "Type of algorithm you want to use to generate the recommendations. Default: " + algorithmName);
+        options.addOption(ALGORITHM_TYPE, true, "Type of algorithm you want to use to generate the recommendations. Default: " + algorithmName);
         options.addOption(ACCEPTANCE_TYPE, true, "Acceptance type for the algorithm. Default: none");
         return options;
     }
@@ -155,9 +183,9 @@ public class App {
             }
         }
 
-        if(cmd.hasOption(ALORITHM_TYPE)){
+        if(cmd.hasOption(ALGORITHM_TYPE)){
             try {
-                algorithmType = AlgorithmType.valueOf(cmd.getOptionValue(ALORITHM_TYPE));
+                algorithmType = AlgorithmType.valueOf(cmd.getOptionValue(ALGORITHM_TYPE));
             }catch (IllegalArgumentException exp){
                 throw new ParseException("Invalid algorithm");
             }
@@ -180,7 +208,9 @@ public class App {
         userIndexMap = new IndexMap();
         toolIndexMap = new IndexMap();
         toolConverter = new EclipseCommandToolConverter(toolIndexMap);
+        logger.debug("Connecting to Command database with: " + commandConnectionParameters.toString());
         commandDB = new MongoCommandDB(commandConnectionParameters, toolConverter, userIndexMap);
+        logger.debug("Connecting to Recommendation database with: " + recommendationConnectionParameters.toString());
         recommendationDB = new MongoRecommendationDB(recommendationConnectionParameters, toolConverter, userIndexMap);
     }
 

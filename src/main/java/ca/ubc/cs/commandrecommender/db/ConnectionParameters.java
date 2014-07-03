@@ -50,4 +50,8 @@ public class ConnectionParameters {
     public String getdBName() {
         return dBName;
     }
+
+    public String toString(){
+        return "Host: " + dbUrl + "Port : " + dbPort + " Database Name: " + dBName + " User: " + dbUser;
+    }
 }
