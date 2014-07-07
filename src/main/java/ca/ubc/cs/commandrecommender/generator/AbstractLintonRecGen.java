@@ -20,6 +20,7 @@ public abstract class AbstractLintonRecGen extends AbstractRecGen {
 	protected Bag<Integer> toolCount = new TreeBag<Integer>();
 	protected Set<Integer> mostPopularToolKeys = new TreeSet<Integer>();
 
+
     /**
      * Fill {@code rc} with the first several legitimate commands or tools in
      * {@link ca.ubc.cs.commandrecommender.generator.AbstractLintonRecGen#mostPopularToolKeys}
@@ -33,6 +34,7 @@ public abstract class AbstractLintonRecGen extends AbstractRecGen {
 		checkSorting();
 		for(Integer toolToRecommend : mostPopularToolKeys){
 			if(!rc.toolsContain(toolToRecommend)){
+                double percentUsage = getPercentUsage(toolToRecommend);
 				rc.add(toolToRecommend, (double) toolCount.getCount(toolToRecommend));
 				if(rc.isSatisfied())
 					break;
@@ -40,11 +42,14 @@ public abstract class AbstractLintonRecGen extends AbstractRecGen {
 		}
 	}
 
+
+
     @Override
     public void runAlgorithm() {
         // Nothing to do here
     }
 
+    protected abstract  double getPercentUsage(Integer toolToRecommend);
     /**
      * Ensures that {@link AbstractLintonRecGen#mostPopularToolKeys}
      * are sorted by most popular ones first

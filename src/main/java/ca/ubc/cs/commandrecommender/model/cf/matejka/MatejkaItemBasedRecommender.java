@@ -81,6 +81,7 @@ public final class MatejkaItemBasedRecommender extends AbstractRecommender imple
 
     // basically, the estimated preference is the average of the similarity between itemid and
     // all other items the user has preference of.
+    //This is where we can get the item that it is being compared to.
 	private double doEstimatePreference(long userid, long itemid)
 			throws TasteException {
 		
