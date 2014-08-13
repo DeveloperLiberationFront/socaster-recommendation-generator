@@ -121,11 +121,11 @@ public class MongoRecommendationDB extends AbstractRecommendationDB{
             // If the command detail is not know, we would not make the recommendation for the user
             // This situation should not occur for the production version as all the tools we know of must be in the 
             // command detail table
-            if(commandDetail == null)
-            	return;
+	    //            if(commandDetail == null)
+	    //            	return;
             recommendation =  new BasicDBObject(USER_ID_FIELD, userId)
             .append(ALGORITHM_TYPE_FIELD, algorithmType)
-            .append(COMMAND_ID_FIELD, commandId)
+		.append(COMMAND_ID_FIELD, new ObjectId(commandId))
             .append(COMMAND_DETAIL_ID_FIELD, commandDetail);
         }
         

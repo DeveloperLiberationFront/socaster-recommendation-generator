@@ -21,7 +21,7 @@ public class EclipseCommandToolConverter extends AbstractCommandToolConverter {
 
     @Override
     public ToolUse convertToToolUse(Map<String, Object> toolUse) {
-        Integer tool = toolUseMap.getItemByItemId((String) toolUse.get(DESCRIPTION));
+        Integer tool = toolUseMap.getItemByItemId(toolUse.get(DESCRIPTION).toString());
         Timestamp time = new Timestamp((Long) toolUse.get(TIME));
         boolean hotKey = (Boolean)toolUse.get(BINDING_USED);
         return new ToolUse(time, tool, hotKey);
