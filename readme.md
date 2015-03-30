@@ -100,3 +100,62 @@ Table that is used for command data. Default: commands
 
 -h,  
 Prints help (ie. the list of command line options and how to use them  
+
+
+
+###Algorithms
+####Overview
+These are different methods to generate recommendations. This page provides an overview of all the current algorithms we have in the system. Please also refer to this paper ("Improving software developers' fluency by recommending development environment commands" is the name of the paper if the link is broken).
+
+####Collaborative Filtering
+These algorithm uses the recommenders from Apache Mahout with Matejka's similarity and preference computation algorithm to generate recommendations. The preference level of a user for an item (command in our case) is the user's use count of that command. 
+ - **Item-based**
+   - Name: ITEM_BASED_CF
+   - Make recommendations by finding similarities between items
+ - **User-based**
+   - Name: USER_BASED_CF
+   -Make recommendations by looking at the data of similar users determined by the commands used
+ - **Latent matrix factorization**
+   -Name: LATENT_MODEL_BASED_CF
+   -Uses SVDRecommender from Mahout
+
+
+####Learning Rule (Discovery)
+Construct learning sequences based on the order in which commands are used. For users to qualify for these algorithms, the user must have an existing knowledge base of commands, that is, at least 40 one-hour sessions. The general idea is if a person invoke command A before invoking command B for the first time, then we have a learning pattern A->B, if B is outside the knowledge base. There may be additional criteria specified by Learning Acceptance Type for such sequence to be counted as a learning pattern. Then, these sequences are processed in different ways to generate recommendations.
+
+**Learning Acceptance Types:**
+ - INCLUDE_ALL: any learning sequences are accepted
+ - MULTI_SESSION: for a command to be considered as learned, the command has to be used in different sessions (hours)
+ - MULTI_USE:  for a command to be considered as learned, the command has to be use more than once
+
+ 
+The algorithms that come under this category:
+ - **Most popular**
+   - Name: MOST_POPULAR_LEARNING_RULE
+   - This algorithm recommend the most commonly "learned" or "discovered" commands that a user is not using. Really, it's just the topmost popular commands beyond people's knowledge base
+ - **Advanced**
+   - Name: LEARNING_RULE
+   - Recommends the most popular discoveries that a user has the prerequisites for. For example, if we have A->C, C->D, A->C, A->B as our discovery pattern and Person1 only used A, then we would recommend C first and then B but we won't recommend D because the user does not know C yet.
+ - **Most prerequisite**
+   - Name: MOST_PREREQ_LEARNING_RULE
+   - Recommends commend based on the number of prerequisite commands a user use for learning a unknown command
+
+
+####Collaborative Filtering with Learning (Discovery)
+This category of algorithms uses collaborative filtering on the learning sequences extracted by the Learning Rule algorithms to recommend learning sequences. These learning sequences are then processed to recommend commands based on what the user has already used before. If the sequence A -> B is recommended by the CF recommender, we recommend B if user has used A, recommend A if user has not used A.
+
+ - Item-based learning rule
+   - Name: ITEM_BASED_CF_WITH_DISCOVERY
+ - User-based learning rule
+   - Name: USER_BASED_CF_WITH_DISCOVERY
+
+####Others
+ - Most widely used
+   - Name: MOST_WIDELY_USED
+   - The command with the most number of users gets recommended first
+ - Most frequently used
+   - Name: MOST_FREQUENTLY_USED
+   - The most frequently used command gets recommended first
+ - Hotkey not used (deprecated)
+   - Name: HOTKEY_NOT_USED
+   - The commands that the user has not used a hotkey for
