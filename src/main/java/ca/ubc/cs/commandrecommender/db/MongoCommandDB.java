@@ -41,11 +41,11 @@ public class MongoCommandDB extends AbstractCommandDB {
         	}
             commandCollection = client.getDB(connectionParameters.getdBName()).getCollection(options.getCommandTable());
             ensureIndex();
-        }catch(UnknownHostException ex){
+        }catch(Exception ex){
             throw new DBConnectionException(ex);
-        }catch(CommandFailureException ex){
+        }/*catch(CommandFailureException ex){
         	throw new DBConnectionException(ex);
-        }
+        }*/
     }
     
     private List<MongoCredential> createCredentialList(

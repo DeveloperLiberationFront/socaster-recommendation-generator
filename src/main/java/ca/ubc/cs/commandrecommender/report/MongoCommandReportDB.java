@@ -41,7 +41,7 @@ public class MongoCommandReportDB {
         	ConnectionParameters connectionParameters = recommenderOptions.getCommandConnectionParameters();
             client = new MongoClient(connectionParameters.getDbUrl(), connectionParameters.getDbPort());
             commandCollection = client.getDB(connectionParameters.getdBName()).getCollection(recommenderOptions.getCommandTable());
-        }catch(UnknownHostException ex){
+        }catch(Exception ex){
             throw new DBConnectionException(ex);
         }
     }

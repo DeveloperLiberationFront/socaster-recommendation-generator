@@ -59,7 +59,7 @@ public class MongoRecommendationDB extends AbstractRecommendationDB{
             commandDetailsCollection = getCollection(options.getCommandDetailTable());
             initCommandDetailsMap();
             ensureIndex();
-        }catch(UnknownHostException ex){
+        }catch(Exception ex){
             throw new DBConnectionException(ex);
         }
     }
